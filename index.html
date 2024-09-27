@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="form.css">
+    <link href="https://fonts.googleapis.com/css?family=JetBrains Mono" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <title>Despesas Golden Soft</title>
+</head>
+<body>
+    <div class="box">
+        <form action="formulario.php" method="POST">
+        <fieldset>
+        <legend><b>Despesas</b></legend>
+        <br>
+        <br>
+        <br>
+<div class="inputBox" id="valor">
+    <label id="valorout" class="labelInput">R$</label>
+    <input id="valorinn" autocomplete="off" type="number" max="100000000.00" onkeypress="return event.charCode != 32" step="0.01" name="valor" class="inputUser" required>
+    <label id="valorin" for="valor" class="labelInput">Valor:</label>
+</div class="inputBox">
+<br><br>
+        
+        <!--
+            <br><br>
+            <div class="inputBox">
+                <input type="text" name="descricao" id="descricao" class="inputUser" required>
+                <label for="descricao" class="labelInput">Descrição</label>
+            </div>
+        -->
+        <br>
+        <div class="inputBox">
+            <label for="tipo">Vendedor</label>
+            <select class="selects" name="tipo" id="tipo" required>
+                <option disabled selected value>Selecionar</option>
+                <option value="John">JOHN</option>
+                <option value="Eduardo">EDUARDO</option>
+                <option value="JulioGilson">JULIO GILSON</option>
+                <option value="Antonio">ANTONIO</option>
+                <option value="Juliane">JULIANE</option>
+                <option value="Rodolfo">RODOLFO</option>
+                <option value="Miron">MIRON</option>
+                <option value="Weverton">WEVERTON</option>
+                <option value="Rede">REDE</option>
+                <option value="Func">FUNC</option>
+                <option value="Geral">GERAL</option>            
+            </select>
+        </div>
+        
+        <br>
+      
+        <div class="inputBox">
+            <label for="pgto">Movimentação</label>
+            <select class="selects" name="pgto" id="pgto" required>
+                <option disabled selected value>Selecionar</option>
+                <option value="AjudaCusto">AJUDA CUSTO</option>
+                <option value="Ajudante">AJUDANTE</option>
+                <option value="Almoco">ALMOÇO</option>
+                <option value="Borracharia">BORRACHARIA</option>
+                <option value="Combustivel">COMBUSTÍVEL</option>
+                <option value="Hotel">HOTEL</option>
+                <option value="Janta">JANTA</option>
+                <option value="MObraMant">M. OBRA MANT.</option>
+                <option value="TrocaOleo">TROCA OLÉO</option>
+                <option value="Oficina">OFICINA</option>
+                <option value="PecaVeiculo">PEÇA VEÍCULO</option>
+                <option value="PedagioUber">PEDÁGIO - UBER</option>
+                <option value="Pneu">PNEU</option>
+                <option value="Vistoria">VISTORIA</option>
+            </select>
+        </div>
+        
+        <br>
+ 
+    
+        <div class="inputBox">
+            <label for="data"><b>Data</b></label>
+            <input class="selects" style="border-radius: 18px;" type="date" name="data" id="data" required>
+        </div>
+        <br>
+        
+        <input type="submit" name="submit" id="submit" value="Enviar">
+        
+        <p class="exit">
+            <a style="color:white;" href="config/logout.php">Sair</a>
+        </p>
+        
+        
+        </fieldset>
+        </form>
+        
+        </div>
+</body>
+</html>
