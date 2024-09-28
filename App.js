@@ -8,7 +8,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static(__dirname)); // Serve arquivos estáticos da raiz, incluindo o CSS
+app.use(express.static(__dirname)); // Isso já cobre a raiz do projeto, então não precisa mudar
 
 // Configurar a conexão com o banco de dados usando variáveis do .env
 const connection = mysql.createConnection({
@@ -69,4 +69,5 @@ app.get('/', (req, res) => {
 // Iniciar o servidor
 app.listen(3000, () => {
   console.log('Servidor rodando na porta 3000');
+  console.log('http://localhost:3000');
 });
