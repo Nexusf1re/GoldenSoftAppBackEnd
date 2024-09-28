@@ -10,10 +10,9 @@
 </head>
 <body>
     <div class="box">
-        <form action="formulario.php" method="POST">
+        <form id="expenseForm">
         <fieldset>
-        <legend><b>Despesas</b></legend>
-        <br>
+        <legend><b>Golden Soft Despesas</b></legend>
         <br>
         <br>
 <div class="inputBox" id="valor">
@@ -21,15 +20,7 @@
     <input id="valorinn" autocomplete="off" type="number" max="100000000.00" onkeypress="return event.charCode != 32" step="0.01" name="valor" class="inputUser" required>
     <label id="valorin" for="valor" class="labelInput">Valor:</label>
 </div class="inputBox">
-<br><br>
-        
-        <!--
-            <br><br>
-            <div class="inputBox">
-                <input type="text" name="descricao" id="descricao" class="inputUser" required>
-                <label for="descricao" class="labelInput">Descrição</label>
-            </div>
-        -->
+<br>
         <br>
         <div class="inputBox">
             <label for="tipo">Vendedor</label>
@@ -92,5 +83,33 @@
         </form>
         
         </div>
+
+        <script>
+            document.getElementById('expenseForm').addEventListener('submit', async (event) => {
+                event.preventDefault(); // Impede o envio padrão do formulário
+                
+                const nome = document.getElementById('tipo').value;
+                const valor = document.getElementById('valorinn').value;
+                const descricao = document.getElementById('pgto').value;
+                const data = document.getElementById('data').value;
+    
+                const response = await fetch('http://localhost:3000/inserir', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ nome, valor, descricao, data })
+                });
+    
+                if (response.ok) {
+                    const message = await response.text();
+                    alert(message);
+                    // Limpa o formulário após envio
+                    document.getElementById('expenseForm').reset();
+                } else {
+                    alert('Erro ao enviar os dados');
+                }
+            });
+        </script>
 </body>
 </html>

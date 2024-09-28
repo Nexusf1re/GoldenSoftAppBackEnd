@@ -29,3 +29,6 @@ Thumbs.db
 # Outros arquivos temporários
 *.tmp
 *.temp
+
+#Arquivo SSL
+/ssl
