@@ -8,6 +8,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(express.static(__dirname)); // Serve arquivos estáticos da raiz
 
 // Configurar a conexão com o banco de dados usando variáveis do .env
 const connection = mysql.createConnection({
