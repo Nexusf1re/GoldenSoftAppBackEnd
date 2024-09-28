@@ -9,11 +9,11 @@
   "routes": [
     {
       "src": "/resources/(.*)",
-      "dest": "/resources/$1"  // This serves static files from the resources folder
+      "dest": "/resources/$1" 
     },
     {
       "src": "/(.*)",
-      "dest": "App.js"  // This serves all other requests to your App.js
+      "dest": "App.js"  
     }
   ]
 }
