@@ -89,7 +89,7 @@
             const data = document.getElementById('data').value;
 
             // Atualize a URL para apontar para o seu aplicativo Vercel
-            const response = await fetch('https://goldensoft-app.vercel.app/inserir', {
+            const response = await fetch(`${window.location.origin}/inserir`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
