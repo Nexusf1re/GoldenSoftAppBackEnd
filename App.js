@@ -7,6 +7,7 @@ require('dotenv').config(); // Carrega as variáveis do arquivo .env
 const app = express();
 
 app.use(cors());
+
 app.use(express.json());
 app.use(express.static(__dirname)); // Isso já cobre a raiz do projeto, então não precisa mudar
 
@@ -63,7 +64,6 @@ app.post("/inserir", (req, res) => {
 
 // Rota para servir o index.html
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/index.html'); // Ajuste o caminho conforme necessário
 });
 
 // Iniciar o servidor
