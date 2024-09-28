@@ -1,16 +1,19 @@
 {
-    "version": 2,
-    "builds": [
-      {
-        "src": "App.js",
-        "use": "@vercel/node"
-      }
-    ],
-    "routes": [
-      {
-        "src": "/(.*)",
-        "dest": "App.js"
-      }
-    ]
-  }
-  
+  "version": 2,
+  "builds": [
+    {
+      "src": "App.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/resources/(.*)",
+      "dest": "/resources/$1"  // This serves static files from the resources folder
+    },
+    {
+      "src": "/(.*)",
+      "dest": "App.js"  // This serves all other requests to your App.js
+    }
+  ]
+}
