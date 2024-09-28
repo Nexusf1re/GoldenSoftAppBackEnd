@@ -21,6 +21,7 @@ const connection = mysql.createConnection({
     ca: process.env.SSL_CA
   }
 });
+
 // Testar a conexão ao banco de dados
 connection.connect((err) => {
   if (err) {
@@ -43,7 +44,7 @@ app.get('/testar-conexao', (req, res) => {
   });
 });
 
-
+// Rota para inserir dados
 app.post("/inserir", (req, res) => {
   const {nome, valor, descricao, data } = req.body;
 
@@ -57,6 +58,11 @@ app.post("/inserir", (req, res) => {
     }
     res.status(200).send("Dados inseridos com sucesso!");
   });
+});
+
+// Rota para a raiz
+app.get('/', (req, res) => {
+  res.send('API funcionando!'); // Resposta para a rota principal
 });
 
 // Iniciar o servidor
