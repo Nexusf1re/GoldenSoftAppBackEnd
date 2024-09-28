@@ -17,10 +17,10 @@ const connection = mysql.createConnection({
   database: process.env.DB_DATABASE, // Carrega do .env
   port: process.env.DB_PORT,         // Carrega do .env
   ssl: {
-    ca: fs.readFileSync(__dirname + '/ssl/ca.pem') // Caminho correto para o certificado SSL
+    rejectUnauthorized: false, // Aceita certificados autoassinados
+    ca: process.env.SSL_CA
   }
 });
-
 // Testar a conexão ao banco de dados
 connection.connect((err) => {
   if (err) {
@@ -63,6 +63,3 @@ app.post("/inserir", (req, res) => {
 app.listen(3000, () => {
   console.log('Servidor rodando na porta 3000');
 });
-
-// Exportar a aplicação para o Vercel
-module.exports = app;
