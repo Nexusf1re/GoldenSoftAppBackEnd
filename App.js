@@ -60,9 +60,9 @@ app.post("/inserir", (req, res) => {
   });
 });
 
-// Rota para a raiz
+// Rota para servir o index.html
 app.get('/', (req, res) => {
-  res.send('API funcionando!'); // Resposta para a rota principal
+  res.sendFile(__dirname + '/index.html'); // Ajuste o caminho conforme necessário
 });
 
 // Iniciar o servidor
