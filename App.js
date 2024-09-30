@@ -3,6 +3,7 @@ const mysql = require('mysql2');
 const cors = require('cors');
 const fs = require('fs');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 require('dotenv').config(); // Carrega as variáveis do arquivo .env
 
 const app = express();
@@ -38,19 +39,9 @@ app.get('/', (req, res) => {
   res.redirect('https://goldensoft-despesas.vercel.app/');
 });
 
-// Rota para inserir dados
-app.post("/inserir", (req, res) => {
-  const { nome, valor, descricao, data } = req.body;
-  const query = "INSERT INTO Despesas (nome, valor, descricao, data) VALUES (?, ?, ?, ?)";
 
-  connection.query(query, [nome, valor, descricao, data], (err, results) => {
-    if (err) {
-      console.error("Error inserting data:", err);
-      return res.status(500).send("Erro ao inserir os dados");
-    }
-    res.status(200).send("Dados inseridos com sucesso!");
-  });
-});
+
+
 
 // Rota de cadastro de usuário
 app.post("/register", async (req, res) => {
@@ -61,28 +52,28 @@ app.post("/register", async (req, res) => {
     return res.status(400).json({ message: "Por favor, preencha todos os campos." });
   }
 
-  // Verifica se o email ou nome já existem no DB
-  const checkQuery = 'SELECT * FROM Usuarios WHERE email = ? OR nome = ?';
+  // Verifica se o email ou username já existem no DB
+  const checkQuery = 'SELECT * FROM Usuarios WHERE email = ? OR username = ?';
   connection.query(checkQuery, [email, name], async (err, results) => {
     if (err) {
-      console.error("Erro ao verificar email e nome:", err);
+      console.error("Erro ao verificar email e username:", err);
       return res.status(500).json({ message: "Erro ao processar o cadastro." });
     }
 
-    // Verifica se existe algum usuário com o email ou nome fornecido
-    const existingUser = results.find(user => user.email === email || user.nome === name);
+    // Verifica se existe algum usuário com o email ou username fornecido
+    const existingUser = results.find(user => user.email === email || user.username === name);
     if (existingUser) {
       const message = existingUser.email === email ? "Este email já está em uso." : "Este nome já está em uso.";
       return res.status(400).json({ message });
     }
 
     try {
-      // Gera um hash para a senha
+      // Gera um hash para a password
       const saltRounds = 10;
       const hashedPassword = await bcrypt.hash(password, saltRounds);
 
       // Insere o usuário no banco de dados
-      const insertQuery = 'INSERT INTO Usuarios (nome, email, senha) VALUES (?, ?, ?)';
+      const insertQuery = 'INSERT INTO Usuarios (username, email, password) VALUES (?, ?, ?)';
       connection.query(insertQuery, [name, email, hashedPassword], (err, result) => {
         if (err) {
           console.error("Erro ao inserir usuário:", err);
@@ -97,6 +88,61 @@ app.post("/register", async (req, res) => {
     }
   });
 });
+
+
+// Rota de login
+app.post("/login", async (req, res) => {
+  const { username, password } = req.body; // Certifique-se de que 'username' e 'password' sejam os campos corretos enviados no frontend
+
+  // Verifica se os campos foram preenchidos
+  if (!username || !password) {
+    return res.status(400).json({ message: "Por favor, preencha o nome de usuário e a senha." });
+  }
+
+  // Verifica se o usuário existe no banco de dados
+  const userQuery = 'SELECT * FROM Usuarios WHERE nome = ?'; // Usando o nome de usuário
+  connection.query(userQuery, [username], async (err, results) => {
+    if (err) {
+      console.error("Erro ao verificar usuário:", err);
+      return res.status(500).json({ message: "Erro ao processar o login." });
+    }
+
+    if (results.length === 0) {
+      return res.status(400).json({ message: "Usuário não encontrado." });
+    }
+
+    const user = results[0];
+
+    // Verifica se a senha está correta
+    const passwordMatch = await bcrypt.compare(password, user.senha); // Verifica a senha hash
+    if (!passwordMatch) {
+      return res.status(401).json({ message: "Senha incorreta." });
+    }
+
+    // Aqui, você pode gerar o token JWT (se já instalou o JWT) ou iniciar a sessão do usuário
+    res.status(200).json({ message: "Login bem-sucedido!" });
+  });
+});
+
+
+// Rota para inserir dados
+app.post("/inserir", (req, res) => {
+  const { nome, valor, descricao, data } = req.body;
+  const query = "INSERT INTO Despesas (nome, valor, descricao, data) VALUES (?, ?, ?, ?)";
+
+  connection.query(query, [nome, valor, descricao, data], (err, results) => {
+    if (err) {
+      console.error("Error inserting data:", err);
+      return res.status(500).send("Erro ao inserir os dados");
+    }
+    res.status(200).send("Dados inseridos com sucesso!");
+  });
+});
+
+
+
+
+
 
 // Rota de teste para verificar se o acesso ao banco está funcionando
 app.get('/testar', (req, res) => {
