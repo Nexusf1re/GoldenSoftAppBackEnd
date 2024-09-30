@@ -137,6 +137,30 @@ app.post("/inserir", (req, res) => {
 });
 
 
+//Movimentacoes Db para o frontend
+app.get('/movimentacoes', (req, res) => {
+  const sql = 'SELECT categoria FROM Movimentacoes';
+  
+  connection.query(sql, (err, results) => {
+      if (err) {
+          return res.status(500).json({ error: err.message });
+      }
+      res.json(results);  // Retorna as movimentações em formato JSON
+  });
+});
+
+//Vendedores Db para o frontend
+app.get('/vendedores', (req, res) => {
+  const sql = 'SELECT vendedor FROM Vendedores';
+  
+  connection.query(sql, (err, results) => {
+      if (err) {
+          return res.status(500).json({ error: err.message });
+      }
+      res.json(results);  // Retorna os vendedores em formato JSON
+  });
+});
+
 
 
 
