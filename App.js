@@ -40,9 +40,6 @@ app.get('/', (req, res) => {
 });
 
 
-
-
-
 // Rota de cadastro de usuário
 app.post("/register", async (req, res) => {
   const { name, email, password } = req.body;
@@ -138,7 +135,6 @@ app.post("/inserir", (req, res) => {
     res.status(200).send("Dados inseridos com sucesso!");
   });
 });
-
 
 
 
