@@ -4,6 +4,7 @@ const cors = require('cors');
 const fs = require('fs');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const authenticateToken = require('./middleware/authMiddleware');
 require('dotenv').config(); // Carrega as variáveis do arquivo .env
 
 const app = express();
@@ -89,7 +90,7 @@ app.post("/register", async (req, res) => {
 
 // Rota de login
 app.post("/login", async (req, res) => {
-  const { username, password } = req.body; // Certifique-se de que 'username' e 'password' sejam os campos corretos enviados no frontend
+  const { username, password } = req.body;
 
   // Verifica se os campos foram preenchidos
   if (!username || !password) {
@@ -97,7 +98,7 @@ app.post("/login", async (req, res) => {
   }
 
   // Verifica se o usuário existe no banco de dados
-  const userQuery = 'SELECT * FROM Usuarios WHERE nome = ?'; // Usando o nome de usuário
+  const userQuery = 'SELECT * FROM Usuarios WHERE username = ?';
   connection.query(userQuery, [username], async (err, results) => {
     if (err) {
       console.error("Erro ao verificar usuário:", err);
@@ -111,15 +112,27 @@ app.post("/login", async (req, res) => {
     const user = results[0];
 
     // Verifica se a senha está correta
-    const passwordMatch = await bcrypt.compare(password, user.senha); // Verifica a senha hash
+    const passwordMatch = await bcrypt.compare(password, user.password); // Verifica a senha hash
     if (!passwordMatch) {
       return res.status(401).json({ message: "Senha incorreta." });
     }
 
-    // Aqui, você pode gerar o token JWT (se já instalou o JWT) ou iniciar a sessão do usuário
-    res.status(200).json({ message: "Login bem-sucedido!" });
+    //Gerar Token JWT
+     const token = jwt.sign(
+      {id: user.id, username: user.username}, // Payload (dados do usuário)
+      process.env.JWT_SECRET, // Chave secreta (armazene no .env)
+      {expiresIn: '1h'} // Token expira em 1 hora
+     );
+
+    res.status(200).json({
+       message: "Login bem-sucedido!",
+       token
+      
+      });
   });
 });
+
+
 
 
 // Rota para inserir dados
