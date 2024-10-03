@@ -9,7 +9,9 @@ require('dotenv').config(); // Carrega as variáveis do arquivo .env
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: 'https://goldensoft-despesas.vercel.app', // URL frontend
+}));
 app.use(express.json());
 app.use(express.static(__dirname));
 
