@@ -9,9 +9,7 @@ require('dotenv').config(); // Carrega as variáveis do arquivo .env
 
 const app = express();
 
-app.use(cors({
-  origin: 'https://goldensoft-despesas.vercel.app', // URL frontend
-}));
+app.use(cors());
 app.use(express.json());
 app.use(express.static(__dirname));
 
@@ -154,7 +152,7 @@ app.post("/login", async (req, res) => {
 
 
 // Rota para inserir dados
-app.post("/inserir", (req, res) => {
+app.post("/inserir", authenticateToken, (req, res) => {
   const { nome, valor, descricao, data } = req.body; 
 
   const query = `INSERT INTO Despesas (nome, valor, descricao, data, dataLancamento) VALUES (?, ?, ?, ?, '${realTimestamp}')`;
