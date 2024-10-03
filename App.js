@@ -13,6 +13,20 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(__dirname));
 
+//constante para obter o timestamp local
+const timestamp = new Intl.DateTimeFormat('en-CA', {
+  timeZone: 'America/Sao_Paulo',
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+  hour: '2-digit',
+  minute: '2-digit',
+  second: '2-digit',
+  hour12: false,
+}).format(new Date());
+
+const realTimestamp = timestamp.replace(/\//g, '-').replace(',', '');
+
 // Configurar a conexão com o banco de dados usando variáveis do .env
 const connection = mysql.createConnection({
   host: process.env.DB_HOST,
@@ -25,6 +39,8 @@ const connection = mysql.createConnection({
     ca: process.env.SSL_CA
   }
 });
+
+
 
 // Testar a conexão ao banco de dados
 connection.connect((err) => {
@@ -71,7 +87,7 @@ app.post("/register", async (req, res) => {
       const hashedPassword = await bcrypt.hash(password, saltRounds);
 
       // Insere o usuário no banco de dados
-      const insertQuery = 'INSERT INTO Usuarios (username, email, password) VALUES (?, ?, ?)';
+      const insertQuery = `INSERT INTO Usuarios (username, email, password, dataCadastro) VALUES (?, ?, ?, '${realTimestamp}')`;
       connection.query(insertQuery, [name, email, hashedPassword], (err, result) => {
         if (err) {
           console.error("Erro ao inserir usuário:", err);
@@ -137,8 +153,9 @@ app.post("/login", async (req, res) => {
 
 // Rota para inserir dados
 app.post("/inserir", (req, res) => {
-  const { nome, valor, descricao, data } = req.body;
-  const query = "INSERT INTO Despesas (nome, valor, descricao, data) VALUES (?, ?, ?, ?)";
+  const { nome, valor, descricao, data } = req.body; 
+
+  const query = `INSERT INTO Despesas (nome, valor, descricao, data, dataLancamento) VALUES (?, ?, ?, ?, '${realTimestamp}')`;
 
   connection.query(query, [nome, valor, descricao, data], (err, results) => {
     if (err) {
