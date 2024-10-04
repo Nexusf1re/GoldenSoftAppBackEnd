@@ -1,10 +1,15 @@
 const jwt = require('jsonwebtoken');
 
-const SECRET_KEY = process.env.JWT_SECRET; 
-
+const SECRET_KEY = process.env.JWT_SECRET;
 
 const authenticateToken = (req, res, next) => {
-    const token = req.headers['authorization'];
+    const authHeader = req.headers['authorization'];
+    
+    if (!authHeader) {
+        return res.status(401).json({ message: "Acesso negado. Token não fornecido." });
+    }
+
+    const token = authHeader.split(' ')[1]; // Extrai o token após "Bearer"
 
     if (!token) {
         return res.status(401).json({ message: "Acesso negado. Token não fornecido." });
