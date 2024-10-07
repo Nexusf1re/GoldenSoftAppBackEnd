@@ -161,7 +161,7 @@ app.get("/entry", authenticateToken, (req, res) => {
 
 // Rota para inserir dados
 app.post("/inserir", authenticateToken, (req, res) => {
-  const { nome, valor, descricao, data } = req.body; 
+  const { nome, valor, descricao,observacao, data } = req.body; 
   const username = req.user.username; // Supondo que o nome do usuário esteja em req.user após a autenticação
 
   const query = `INSERT INTO Despesas (nome, valor, descricao,observacao, data, user, dataLancamento) VALUES (?, ?, ? ,?, ?, ?, '${realTimestamp}')`;
