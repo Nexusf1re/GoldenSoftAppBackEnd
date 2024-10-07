@@ -144,6 +144,21 @@ app.get('/form', authenticateToken, (req, res) => {
 });
 
 
+// Rota para buscar os dados par o ENTRY
+app.get("/entry", authenticateToken, (req, res) => {
+  const query = "SELECT id, nome, valor, descricao, data FROM Despesas";
+
+  pool.query(query, (err, results) => {
+    if (err) {
+      console.error("Erro ao buscar os dados:", err);
+      return res.status(500).send("Erro ao buscar os dados");
+    }
+    res.status(200).json(results);
+  });
+});
+
+
+
 
 // Rota para inserir dados
 app.post("/inserir", authenticateToken, (req, res) => {
