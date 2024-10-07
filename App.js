@@ -138,6 +138,13 @@ app.post("/login", async (req, res) => {
   });
 });
 
+
+// Rota para acessar o formulário, protegida pelo middleware
+app.get('/api/form', authenticateToken, (req, res) => {
+  res.sendFile(path.join(__dirname, 'https://goldensoft-despesas.vercel.app/form.html')); // ajuste o caminho
+});
+
+
 // Rota para inserir dados
 app.post("/inserir", authenticateToken, (req, res) => {
   const { nome, valor, descricao, data } = req.body; 
