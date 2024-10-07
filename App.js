@@ -159,14 +159,14 @@ app.get("/entry", authenticateToken, (req, res) => {
 
 
 
-
 // Rota para inserir dados
 app.post("/inserir", authenticateToken, (req, res) => {
   const { nome, valor, descricao, data } = req.body; 
+  const username = req.user.username; // Supondo que o nome do usuário esteja em req.user após a autenticação
 
-  const query = `INSERT INTO Despesas (nome, valor, descricao, data, dataLancamento) VALUES (?, ?, ?, ?, '${realTimestamp}')`;
+  const query = `INSERT INTO Despesas (nome, valor, descricao, data, user, dataLancamento) VALUES (?, ?, ?, ?, ?, '${realTimestamp}')`;
 
-  pool.query(query, [nome, valor, descricao, data], (err, results) => {
+  pool.query(query, [nome, valor, descricao, data, username], (err, results) => {
     if (err) {
       console.error("Error inserting data:", err);
       return res.status(500).send("Erro ao inserir os dados");
@@ -174,6 +174,8 @@ app.post("/inserir", authenticateToken, (req, res) => {
     res.status(200).send("Dados inseridos com sucesso!");
   });
 });
+
+
 
 // Movimentacoes Db para o frontend
 app.get('/movimentacoes', (req, res) => {
