@@ -139,10 +139,10 @@ app.post("/login", async (req, res) => {
 });
 
 
-// Rota para acessar o formulário, protegida pelo middleware
-app.get('/api/form', authenticateToken, (req, res) => {
-  res.sendFile(path.join(__dirname, 'https://goldensoft-despesas.vercel.app/form.html')); // ajuste o caminho
+app.get('/form', authenticateToken, (req, res) => {
+  res.status(200).json({ message: 'Token válido' }); // Retorna status 200 se o token for válido
 });
+
 
 
 // Rota para inserir dados
