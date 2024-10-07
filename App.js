@@ -146,7 +146,7 @@ app.get('/form', authenticateToken, (req, res) => {
 
 // Rota para buscar os dados par o ENTRY
 app.get("/entry", authenticateToken, (req, res) => {
-  const query = "SELECT id, nome, valor, descricao, data FROM Despesas";
+  const query = "SELECT id, nome, valor, descricao, observacao, data FROM Despesas";
 
   pool.query(query, (err, results) => {
     if (err) {
