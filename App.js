@@ -187,6 +187,18 @@ app.get('/movimentacoes', (req, res) => {
   });
 });
 
+// Movimentacoes Db para o frontend
+app.get('/movimentacoesGeral', (req, res) => {
+  const sql = 'SELECT categoria FROM MovimentacoesGeral';
+  
+  pool.query(sql, (err, results) => {
+      if (err) {
+          return res.status(500).json({ error: err.message });
+      }
+      res.json(results);  // Retorna as movimentações em formato JSON
+  });
+});
+
 // Vendedores Db para o frontend
 app.get('/vendedores', (req, res) => {
   const sql = 'SELECT vendedor FROM Vendedores';
