@@ -4,12 +4,11 @@ const cors = require('cors');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const authenticateToken = require('./middleware/authMiddleware');
-require('dotenv').config(); // Carrega as variáveis do arquivo .env
-
+require('dotenv').config(); 
 const app = express();
 
 app.use(cors({
-  origin: 'https://goldensoft-despesas.vercel.app', // URL do seu frontend
+  origin: 'https://goldensoft-despesas.vercel.app',
 }));
 app.use(express.json());
 app.use(express.static(__dirname));
@@ -55,12 +54,6 @@ pool.getConnection((err, connection) => {
   // Libere a conexão após o teste
   connection.release();
 });
-
-//Rota protegida para validar acesso no front-end
-app.get('/auth', authMiddleware, (req, res) => {
-  res.json({ message: 'Acesso autorizado!' });
-});
-
 
 // Rota para servir o index.html
 app.get('/', (req, res) => {
