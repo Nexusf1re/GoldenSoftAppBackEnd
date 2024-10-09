@@ -14,12 +14,14 @@ const authRoutes = require('./routes/authRoutes');
 const despesasRoutes = require('./routes/despesasRoutes');
 const movimentacoesRoutes = require('./routes/movimentacoesRoutes');
 const vendedoresRoutes = require('./routes/vendedoresRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 // Usar as rotas
 app.use('/auth', authRoutes);
 app.use('/despesas', despesasRoutes);
 app.use('/movimentacoes', movimentacoesRoutes);
 app.use('/vendedores', vendedoresRoutes);
+app.use('/user', userRoutes);
 
 // Rota para servir o index.html
 app.get('/', (req, res) => {
