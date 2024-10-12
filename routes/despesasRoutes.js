@@ -23,7 +23,7 @@ router.post("/inserir", authenticateToken, (req, res) => {
   const { nome, valor, descricao, observacao, data } = req.body; 
   const username = req.user.username;
 
-  const query = `INSERT INTO Despesas (nome, valor, descricao, observacao, data, user, dataLancamento) VALUES (?, ?, ?, ?, ?, ?, ${localTimestamp})`;
+  const query = `INSERT INTO Despesas (nome, valor, descricao, observacao, data, user, dataLancamento) VALUES (?, ?, ?, ?, ?, ?, '${localTimestamp}')`;
 
   pool.query(query, [nome, valor, descricao, observacao, data, username], (err, results) => {
     if (err) {
