@@ -1,6 +1,7 @@
 const express = require('express');
 const pool = require('../config/db');
 const authenticateToken = require('../middleware/authMiddleware');
+const localTimestamp = require('../config/timestamp');
 
 const router = express.Router();
 
@@ -22,7 +23,7 @@ router.post("/inserir", authenticateToken, (req, res) => {
   const { nome, valor, descricao, observacao, data } = req.body; 
   const username = req.user.username;
 
-  const query = `INSERT INTO Despesas (nome, valor, descricao, observacao, data, user, dataLancamento) VALUES (?, ?, ?, ?, ?, ?, NOW())`;
+  const query = `INSERT INTO Despesas (nome, valor, descricao, observacao, data, user, dataLancamento) VALUES (?, ?, ?, ?, ?, ?, ${localTimestamp})`;
 
   pool.query(query, [nome, valor, descricao, observacao, data, username], (err, results) => {
     if (err) {
