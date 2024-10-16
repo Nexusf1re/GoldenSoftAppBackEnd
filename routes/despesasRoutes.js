@@ -18,6 +18,26 @@ router.get("/entry", authenticateToken, (req, res) => {
   });
 });
 
+// Rota para buscar os dados de uma despesa específica pelo ID
+router.get("/entry/:id", authenticateToken, (req, res) => {
+  const { id } = req.params;
+  const query = "SELECT id, nome, valor, descricao, observacao, data FROM Despesas WHERE id = ?";
+
+  pool.query(query, [id], (err, results) => {
+    if (err) {
+      console.error("Erro ao buscar os dados:", err);
+      return res.status(500).send("Erro ao buscar os dados");
+    }
+    
+    if (results.length === 0) {
+      return res.status(404).send("Despesa não encontrada");
+    }
+    
+    res.status(200).json(results[0]); // Retorna apenas o primeiro resultado, pois o ID é único
+  });
+});
+
+
 // Rota para inserir dados
 router.post("/inserir", authenticateToken, (req, res) => {
   const { nome, valor, descricao, observacao, data } = req.body; 
