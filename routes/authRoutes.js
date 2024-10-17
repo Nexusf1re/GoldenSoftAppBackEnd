@@ -6,6 +6,8 @@ const localTimestamp = require('../config/timestamp');
 
 const router = express.Router();
 
+
+
 // Rota de cadastro de usuário
 router.post("/register", async (req, res) => {
   const { name, email, password } = req.body;
@@ -45,6 +47,8 @@ router.post("/register", async (req, res) => {
   });
 });
 
+
+
 // Rota de login
 router.post("/login", async (req, res) => {
   const { username, password } = req.body;
@@ -82,5 +86,7 @@ router.post("/login", async (req, res) => {
     });
   });
 });
+
+
 
 module.exports = router;

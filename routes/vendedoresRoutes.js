@@ -3,6 +3,8 @@ const pool = require('../config/db');
 
 const router = express.Router();
 
+
+
 // Vendedores Db para o frontend
 router.get('/vendedores', (req, res) => {
   const sql = 'SELECT vendedor FROM Vendedores';
@@ -14,5 +16,7 @@ router.get('/vendedores', (req, res) => {
     res.json(results);
   });
 });
+
+
 
 module.exports = router;
