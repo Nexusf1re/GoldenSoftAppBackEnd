@@ -76,4 +76,20 @@ router.put("/entryUpdate/:id", authenticateToken, (req, res) => {
 
 
 
+//Rota para Deletar uma despesa pelo ID
+router.delete("/entryDelete/:id", authenticateToken, (req, res) => {
+  const { id } = req.params;
+  const query = "DELETE FROM Despesas WHERE id = ?";
+
+  pool.query(query, [id], (err, result) => {
+    if (err) {
+      console.error("Erro ao deletar os dados:", err);
+      return res.status(500).send("Erro ao deletar os dados");
+    }
+    res.status(200).send("Dados deletados com sucesso!");
+  });
+});
+
+
+
 module.exports = router;
