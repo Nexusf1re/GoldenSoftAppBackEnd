@@ -1,7 +1,7 @@
 const express = require('express');
 const pool = require('../config/db');
 const authenticateToken = require('../middleware/authMiddleware');
-const localTimestamp = require('../config/timestamp');
+const getLocalTimestamp = require('../config/timestamp'); // Importa a função de timestamp
 
 const router = express.Router();
 
@@ -20,15 +20,17 @@ router.get("/entry", authenticateToken, (req, res) => {
 });
 
 
-
 // Rota para inserir dados
 router.post("/inserir", authenticateToken, (req, res) => {
   const { nome, valor, descricao, observacao, data } = req.body; 
   const username = req.user.username;
 
-  const query = `INSERT INTO Despesas (nome, valor, descricao, observacao, data, user, dataLancamento) VALUES (?, ?, ?, ?, ?, ?, '${localTimestamp}')`;
+  // Obtém o timestamp local usando a função
+  const localTimestamp = getLocalTimestamp(); // Chama a função para obter o timestamp no formato correto
 
-  pool.query(query, [nome, valor, descricao, observacao, data, username], (err, results) => {
+  const query = `INSERT INTO Despesas (nome, valor, descricao, observacao, data, user, dataLancamento) VALUES (?, ?, ?, ?, ?, ?, ?)`;
+
+  pool.query(query, [nome, valor, descricao, observacao, data, username, localTimestamp], (err, results) => {
     if (err) {
       console.error("Error inserting data:", err);
       return res.status(500).send("Erro ao inserir os dados");
